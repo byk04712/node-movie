@@ -1,0 +1,24 @@
+{
+  "name": "node-movie",
+  "description": "nodejs开发的电影小网站",
+  "main": "app.js",
+  "authors": [
+    "Andy"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "电影"
+  ],
+  "homepage": "https://github.com/byk04712/nodejs",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/libs",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7"
+  }
+}

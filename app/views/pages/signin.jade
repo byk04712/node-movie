@@ -1,0 +1,27 @@
+
+extends ../layout
+
+block content
+	.container
+		.row
+			.col-md-5.col-md-offset-7
+				br
+				br
+				br
+				br
+				.panel.panel-default
+					.panel-heading
+						.panel-title 用户登录
+					.panel-body
+						if message
+							.alert.alert-warning #{message}
+						form#signupForm(method="post", action="/user/signin")
+							.form-group
+								label.control-label(for="username") 账号
+								input#username.form-control.input-lg(name="user[username]")
+							.form-group
+								label.control-label(for="password") 密码
+								input#password.form-control.input-lg(type="password", name="user[password]")
+							.form-group
+								input.btn.btn-success.btn-lg.btn-block(type="submit", value="登录")
+script(type="text/javascript", src="/js/validate.js")

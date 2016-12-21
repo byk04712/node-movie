@@ -1,0 +1,43 @@
+extends ../layout
+
+block content
+	.container
+		.row
+			table.table.table-hover.table-bordered.table-striped
+				thead
+					tr.info
+						th 电影名字
+						th 导演
+						th 国家
+						th 上映年份
+						th 录入时间
+						th 查看
+						th 更新
+						th 删除
+				tbody
+					each item in movies
+						tr(class="item-id-#{item._id}")
+							td #{item.title}
+							td #{item.doctor}
+							td #{item.country}
+							td #{item.year}
+							td #{moment(item.meta.createAt).format('YYYY-MM-DD')}
+							td: a(target="_blank", href="/movie/detail/#{item._id}") 查看
+							td: a(target="_blank", href="/admin/movie/update/#{item._id}") 修改
+							td
+								button.btn.btn-danger(type="button", data-id="#{item._id}", data-toggle="modal", data-target="#myModal", data-name="#{item.title}") 删除
+
+	#myModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="myModalLabel")
+		.modal-dialog(role="document")
+			.modal-content
+				.modal-header
+					button.close(type="button", data-dismiss="modal", aria-label="Close")
+						span(aria-hidden="true") &times;
+					h4 提示
+				.modal-body
+					input#selected-id(type="hidden")
+					span 确定删除电影<code id="movie-name"></code>吗？
+				.modal-footer
+					button.btn.btn-default(data-dismiss="modal") 取消
+					button.btn.btn-primary.del 确定
+	script(type="text/javascript", src="/js/list.js")

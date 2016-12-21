@@ -1,0 +1,13 @@
+extends ../layout
+
+block content
+	.container
+		.row
+			each item in movies
+				.col-md-3
+					.thumbnail
+						a(href="/movie/detail/#{item._id}")
+							img(src="#{item.poster}", alt="#{item.title}" style="width:180px;height:236px;")
+						.caption.text-center
+							h3 #{item.title}
+							p: a.btn.btn-success(href="/movie/detail/#{item._id}", role="button") 立即播放
