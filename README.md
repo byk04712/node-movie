@@ -1,12 +1,9 @@
 # 项目目录结构说明
 
-`
-npm install express
-npm install jade
-npm install mongoose
-npm install bower -g
-bower install bootstrap
-`
+
+`npm install`
+`npm install bower -g`
+`bower install bootstrap`
 
 view 模版使用 jade
 
