@@ -2,7 +2,9 @@
 
 
 `npm install`
+
 `npm install bower -g`
+
 `bower install bootstrap`
 
 view 模版使用 jade
