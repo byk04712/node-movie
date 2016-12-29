@@ -45,9 +45,17 @@ exports.signin = (req, res) => {
 					});
 				}
 				if (isMatch) {
-					// 登录成功，跳到首页
+					// 登录成功
+					// 1.更新session中的用户
+					// 2.跳转到登录前请求的页面
+					// 3.如果是登录页面登录的，则跳转到首页
 					req.session.user = user;
-					res.redirect('/');
+					const refer = req.headers.referer;
+					if (refer.indexOf('/signin') != -1) {
+						res.redirect('/');
+					} else {
+						res.redirect(refer);
+					}
 				} else {
 					res.render('signin', {
 						message: '用户名或密码不正确'
@@ -78,7 +86,7 @@ exports.signup = (req, res) => {
 							res.render('signup', {message: err.message});
 						} else {
 							// 注册成功
-							res.redirect('/admin/user/list');
+							res.redirect('/signin');
 						}
 					});
 				}

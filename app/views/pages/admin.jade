@@ -6,6 +6,12 @@ block content
 			form.form-horizontal(method="post", action="/admin/movie/save")
 				input(type="hidden", name="movie[id]", value="#{movie._id}")
 				.form-group
+					label.col-sm-3.control-label(for="inputCategory") 电影分类
+					.col-sm-9
+						select.form-control(name="movie[category]")
+							each category in categories
+								option(value="#{category._id}") #{category.name}
+				.form-group
 					lable.col-sm-3.control-label(for="inputTitle") 电影名字
 					.col-sm-9
 						input#inputTitle.form-control(type="text", name="movie[title]", value="#{movie.title}")

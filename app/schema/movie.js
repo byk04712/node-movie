@@ -1,9 +1,15 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const ObjectId = Schema.Types.ObjectId;
 
 
 
 // 定义模型
-const MovieSchema = new mongoose.Schema({
+const MovieSchema = new Schema({
+	category: {
+		type: ObjectId,
+		ref: 'Category'
+	},
 	doctor: {
 		type: String,
 		default: ''

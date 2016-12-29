@@ -1,0 +1,15 @@
+extends ../layout
+block content
+	.container
+		.row
+			.col-md-6.col-md-offset-3
+				.panel.panel-default
+					.panel-heading
+						h3 新增电影分类
+					.panel-body
+						form(action="/admin/category/save", method="POST")
+							.form-group
+								label.control-label(for="name") 电影分类名称
+								input.form-control(name="category[name]", value=category[name])
+							.form-group
+								button.btn.btn-primary(type="submit") 提交

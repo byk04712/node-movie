@@ -1,21 +1,30 @@
 const Movie = require('../model/movie');
+const Comment = require('../model/comment');
+const Category = require('../model/category');
 const _ = require('underscore');
 
 
 exports.admin = (req, res) => {
 	// 配置返回的页面 views/admin.jade
-	res.render('admin', {
-		title: '电影录入页',
-		movie: {
-			title: '',
-			doctor: '',
-			country: '',
-			language: '',
-			poster: '',
-			flash: '',
-			year: '',
-			summary: ''
+	Category.find({}, (error, categories) => {
+		if (error) {
+			return res.render('common/500', {error: error});
 		}
+		res.render('admin', {
+			title: '电影录入页',
+			movie: {
+				category: '',
+				title: '',
+				doctor: '',
+				country: '',
+				language: '',
+				poster: '',
+				flash: '',
+				year: '',
+				summary: ''
+			},
+			categories: categories
+		});
 	});
 }
 
@@ -96,6 +105,7 @@ exports.save = (req, res) => {
 		})
 	} else {
 		newObj = new Movie({
+			category: movieObj.category,
 			doctor: movieObj.doctor,
 			title: movieObj.title,
 			language: movieObj.language,
@@ -116,19 +126,37 @@ exports.save = (req, res) => {
 }
 
 
+/**
+ * 电影详情页（
+ * 		可以使用异步的方式加载电影详情页，先显示电影信息，然后异步加载评论等其他信息
+ * 	）
+ * 1.首先查到电影数据
+ * 2.根据电影id查询评论列表
+ */
 exports.detail = (req, res) => {
 	const id = req.params.id;
 	if (id) {
 		Movie.findById(id, (err, movie) => {
 			if (err) {
-				res.render('common/500', {error: new Error('没有找到对应的资源')});
-			} else {
-				// 配置返回的页面 views/detail
-				res.render('detail', {
-					title: movie.title,
-					movie: movie
-				});
+				return res.render('common/500', {error: new Error('没有找到对应的资源')});
 			}
+
+			Comment
+				.find({movie: movie})
+				.populate('from', 'username')	// populate 用来获取关联表中的字段，如果第二个参数不写 username,将返回 user表中所有字段
+				.populate('reply.from reply.to', 'username')
+				.exec((err, comments) => {
+					if (err) {
+						return res.render('common/500', {error: new Error('电影评论数据异常')});		
+					}
+// console.log('comments = ', comments);
+					// 配置返回的页面 views/detail
+					res.render('detail', {
+						title: movie.title,
+						movie: movie,
+						comments: comments
+					});
+				});
 		});
 	} else {
 		res.render('common/404');

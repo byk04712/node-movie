@@ -1,0 +1,15 @@
+extends ../layout
+
+block content
+	.container
+		.row
+			table.table.table-hover.table-striped.table-bordered
+				thead
+					tr
+						th 分类名称
+						th 电影总数
+				tbody
+					each item in categories
+						tr
+							td #{item.name}
+							td #{item.movies.length}

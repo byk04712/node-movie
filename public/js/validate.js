@@ -49,7 +49,18 @@ $(function() {
 			pword2.select();
 			return false;
 		}
+		return true;
+	});
 
+	// 评论校验
+	$("#commentForm").bind("submit", function() {
+		var content = $(this).find("#content");
+		var contentVal = content.val().trim();
+		if (!contentVal) {
+			alert("请输入评论内容");
+			content.focus();
+			return false;
+		}
 		return true;
 	});
 });

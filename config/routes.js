@@ -1,6 +1,8 @@
 const Index = require('../app/controller/index');
 const User = require('../app/controller/user');
 const Movie = require('../app/controller/movie');
+const Comment = require('../app/controller/comment');
+const Category = require('../app/controller/category');
 
 
 module.exports = function(app) {
@@ -29,7 +31,14 @@ module.exports = function(app) {
 	app.get('/admin/movie/list', User.adminRequired, Movie.list);
 	app.get('/admin/movie/update/:id', User.adminRequired, Movie.update);
 	app.post('/admin/movie/save', User.adminRequired, Movie.save);
-	app.get('/movie/detail/:id', User.adminRequired, Movie.detail);
+	app.get('/movie/detail/:id', Movie.detail);
 
 
+	// Comment
+	app.post('/user/comment', User.signinRequired, Comment.save);
+
+	// Category
+	app.get('/admin/category/new', User.adminRequired, Category.new);
+	app.post('/admin/category/save', User.adminRequired, Category.save);
+	app.get('/admin/category/list', Category.list);
 }

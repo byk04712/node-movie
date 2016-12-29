@@ -8,30 +8,8 @@ block content
 					tr.info
 						th 账号
 						th 录入时间
-						th 查看
-						th 更新
-						th 删除
 				tbody
 					each item in users
 						tr(class="item-id-#{item._id}")
 							td #{item.username}
 							td #{moment(item.meta.createAt).format('YYYY-MM-DD')}
-							td: a(target="_blank", href="/admin/user/detail/#{item._id}") 查看
-							td: a(target="_blank", href="/admin/user/update/#{item._id}") 修改
-							td
-								button.btn.btn-danger(type="button", data-id="#{item._id}", data-toggle="modal", data-target="#myModal", data-name="#{item.title}") 删除
-
-	#myModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="myModalLabel")
-		.modal-dialog(role="document")
-			.modal-content
-				.modal-header
-					button.close(type="button", data-dismiss="modal", aria-label="Close")
-						span(aria-hidden="true") &times;
-					h4 提示
-				.modal-body
-					input#selected-id(type="hidden")
-					确定删除电影<code id="movie-name"></code>吗？
-				.modal-footer
-					button.btn.btn-default(data-dismiss="modal") 取消
-					button.btn.btn-primary.del 确定
-	script(type="text/javascript", src="/js/list.js")
