@@ -9,6 +9,7 @@ block content
 						th 电影名字
 						th 导演
 						th 国家
+						th 类型
 						th 上映年份
 						th 录入时间
 						th 查看
@@ -20,6 +21,7 @@ block content
 							td #{item.title}
 							td #{item.doctor}
 							td #{item.country}
+							td #{item.category.name}
 							td #{item.year}
 							td #{moment(item.meta.createAt).format('YYYY-MM-DD')}
 							td: a(target="_blank", href="/movie/detail/#{item._id}") 查看
