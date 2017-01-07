@@ -106,27 +106,60 @@ exports.save = (req, res) => {
 		})
 	} else {
 		newObj = new Movie(movieObj);
-		// 保存电影
-		newObj.save((err, result) => {
-			if (err) {
-				return res.render('common/500', {error: err});
-			}
-			const categoryId = newObj.category;
-			// 保存电影分类信息
-			Category.findById(categoryId, (err, category) => {
-				if (err) {
-					return res.render('common/500', {error: err});
-				}
-				// 将电影添加到电影分类数组中
-				category.movies.push(result._id);
 
-				category.save((error, cate) => {
-					if (error) {
+		// 保存电影分类信息
+		Category.findById(movieObj.category, (err, category) => {
+			if (err) {
+				var newCategory = new Category({
+					name: movieObj.category
+				});
+				newCategory.save((error, data) => {
+					newObj.category = data._id;
+
+					newObj.save((err, result) => {
+						if (err) {
+							return res.render('common/500', {error: err});
+						}
+						// 保存电影分类信息
+						Category.findById(categoryId, (err, category) => {
+							if (err) {
+								return res.render('common/500', {error: err});
+							}
+							// 将电影添加到电影分类数组中
+							category.movies.push(result._id);
+
+							category.save((error, cate) => {
+								if (error) {
+									return res.render('common/500', {error: error});
+								}
+								res.redirect('/movie/detail/' + result._id);
+							})
+						});
+					});
+				});
+			}
+			if (category) {
+				newObj.save((err, result) => {
+					if (err) {
 						return res.render('common/500', {error: err});
 					}
-					res.redirect('/movie/detail/' + result._id);
-				})
-			});
+					// 保存电影分类信息
+					Category.findById(result.category, (err, category) => {
+						if (err) {
+							return res.render('common/500', {error: err});
+						}
+						// 将电影添加到电影分类数组中
+						category.movies.push(result._id);
+
+						category.save((error, cate) => {
+							if (error) {
+								return res.render('common/500', {error: error});
+							}
+							res.redirect('/movie/detail/' + result._id);
+						})
+					});
+				});
+			}
 		});
 	}
 }

@@ -7,13 +7,17 @@ block content
 				if movie._id
 					input(type="hidden", name="movie[id]", value=movie._id)
 				.form-group
-					label.col-sm-3.control-label(for="inputCategory") 电影分类
+					label.col-sm-3.control-label(for="doubanMovie") 豆瓣电影导入
 					.col-sm-9
+						input#doubanMovie.form-control(type="text", placeholder="在此输入豆瓣网电影ID")
+				.form-group
+					label.col-sm-3.control-label(for="inputCategory") 电影分类
+					.col-sm-9#genreOptions
 						each category in categories
 							label.radio-inline
 								//- 修改
 								if movie._id
-									input(type="radio", name="movie[category]", value=category._id, checked=category._id.toString()==movie.category.toString())
+									input(type="radio", name="movie[category]", value=category._id)
 									|#{category.name}
 								else
 									input(type="radio", name="movie[category]", value=category._id)
@@ -25,27 +29,27 @@ block content
 				.form-group
 					lable.col-sm-3.control-label(for="inputDocotor") 导演
 					.col-sm-9
-						input#inputTitle.form-control(type="text", name="movie[doctor]", value=movie.doctor)
+						input#inputDocotor.form-control(type="text", name="movie[doctor]", value=movie.doctor)
 				.form-group
 					lable.col-sm-3.control-label(for="inputCountry") 国家
 					.col-sm-9
-						input#inputTitle.form-control(type="text", name="movie[country]", value=movie.country)
+						input#inputCountry.form-control(type="text", name="movie[country]", value=movie.country)
 				.form-group
 					lable.col-sm-3.control-label(for="inputLanguage") 语种
 					.col-sm-9
-						input#inputTitle.form-control(type="text", name="movie[language]", value=movie.language)
+						input#inputLanguage.form-control(type="text", name="movie[language]", value=movie.language)
 				.form-group
 					lable.col-sm-3.control-label(for="inputPoster") 海报地址
 					.col-sm-9
-						input#inputTitle.form-control(type="text", name="movie[poster]", value=movie.poster)
+						input#inputPoster.form-control(type="text", name="movie[poster]", value=movie.poster)
 				.form-group
 					lable.col-sm-3.control-label(for="inputFalsh") 片源地址
 					.col-sm-9
-						input#inputTitle.form-control(type="text", name="movie[flash]", value=movie.flash)
+						input#inputFalsh.form-control(type="text", name="movie[flash]", value=movie.flash)
 				.form-group
 					lable.col-sm-3.control-label(for="inputYear") 上映年份
 					.col-sm-9
-						input#inputTitle.form-control(type="text", name="movie[year]", value=movie.year)
+						input#inputYear.form-control(type="text", name="movie[year]", value=movie.year)
 				.form-group
 					label.col-sm-3.control-label(for="inputSummary") 简介
 					.col-sm-9
@@ -54,3 +58,4 @@ block content
 					.col-sm-3
 					.col-sm-9
 						input.btn.btn-primary.btn-lg(type="submit", value="提交")
+	script(type="text/javascript", src="/js/admin.js")
