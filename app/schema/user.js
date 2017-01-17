@@ -40,10 +40,14 @@ UserSchema.pre('save', function(next, path, val, typel) {
 
 	// 保存密码时，将密码进行加密
 	bcrypt.genSalt(saltRounds, (err, salt) => {
-		if (err) return next(err);
+		if (err) {
+			return next(err);
+		}
 
 		bcrypt.hash(user.password, salt, (err, hash) => {
-			if (err) return next(err);
+			if (err) {
+				return next(err);
+			}
 
 			user.password = hash;
 			next();
@@ -54,7 +58,7 @@ UserSchema.pre('save', function(next, path, val, typel) {
 // 定义对象方法
 UserSchema.methods = {
 	comparePassword: function(_password, cb) {
-		console.log('_password', _password + ' -- ' + this.password);
+		window.console.log('_password', _password + ' -- ' + this.password);
 		bcrypt.compare(_password, this.password, (err, res) => {
 			if (err) {
 				return cb(err);

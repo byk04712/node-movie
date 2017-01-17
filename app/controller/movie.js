@@ -221,7 +221,7 @@ exports.detail = (req, res) => {
 	if (id) {
 		// 每次访问，访问量+1
 		Movie.update({_id: id}, {$inc:{pv:1}}, (err) => {
-			console.log('访问量+1');
+			window.console.log('访问量+1');
 		});
 		Movie
 			.findOne({_id: id})
@@ -239,7 +239,7 @@ exports.detail = (req, res) => {
 						if (err) {
 							return res.render('common/500', {error: new Error('电影评论数据异常')});		
 						}
-	// console.log('comments = ', comments);
+
 						// 配置返回的页面 views/detail
 						res.render('detail', {
 							title: movie.title,

@@ -20,7 +20,7 @@ function getRandomString(len) {
 
 
 
-var user;
+let user;
 
 // test
 describe('<Unit Test', () => {
@@ -29,7 +29,7 @@ describe('<Unit Test', () => {
 		// 测试开始之前
 		before(done => {
 			user = {
-				name: getRandomString(),
+				username: getRandomString(),
 				password: 'password'
 			};
 			done();
@@ -39,7 +39,7 @@ describe('<Unit Test', () => {
 		describe('Before Method save', () => {
 			// 保存之前应该是没有该用户的
 			it('should begin without test user', (done) => {
-				User.find({name: user.name}, (error, users) => {
+				User.find({username: user.username}, (error, users) => {
 					users.should.have.length(0);
 					done();
 				});
@@ -73,7 +73,7 @@ describe('<Unit Test', () => {
 						isMatch.should.equal(true);
 
 						_user.remove(error => {
-							should.not.exits(error);
+							should.not.exist(error);
 							done();
 						})
 					});
@@ -93,7 +93,7 @@ describe('<Unit Test', () => {
 				});
 			});
 
-			
+			// 测试username是否唯一			
 			it('should username be unique', (done) => {
 				var _user1 = new User(user);
 				_user1.save((error) => {

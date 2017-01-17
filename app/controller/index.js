@@ -34,9 +34,6 @@ exports.index = (req, res) => {
 			if (err) {
 				res.render('common/500', {error: err});
 			} else {
-				for (var i = 0; i < categories.length; i++) {
-					console.log(categories[i].movies);
-				}
 				res.render('index', {
 					title: '天地影视-这里有你想看的，想听的，想玩的。一切拥有尽有。',
 					categories: categories
@@ -52,7 +49,9 @@ exports.search = (req, res) => {
 	var categoryId = req.query.cid;
 	// 当前页
 	var page = parseInt(req.query.p) || 1;
-	if (page < 1) page = 1;
+	if (page < 1) {
+		page = 1;
+	}
 	// 每页显示数量
 	var pageSize = 4;
 

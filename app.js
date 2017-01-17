@@ -83,6 +83,5 @@ if ('development' === app.get('env')) {
 	mongoose.set('debug', true);
 }
 
-
 console.log(`Server started on port ${port}`);
 
