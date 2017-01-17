@@ -27,7 +27,7 @@ exports.index = (req, res) => {
 			// }
 			path: 'movies',
 			options: {
-				limit: 5
+				limit: 20
 			}
 		})
 		.exec((err, categories) => {
@@ -43,4 +43,64 @@ exports.index = (req, res) => {
 				});
 			}
 		});
+}
+
+
+// 查询结果
+exports.search = (req, res) => {
+	// 电影分类id
+	var categoryId = req.query.cid;
+	// 当前页
+	var page = parseInt(req.query.p) || 1;
+	if (page < 1) page = 1;
+	// 每页显示数量
+	var pageSize = 4;
+
+	// 首页点击分类进去的
+	if (categoryId) {
+		Category
+			.findOne({_id: categoryId})
+			.populate({
+				path: 'movies',
+				options: {
+					limit: pageSize,
+					skip: (page - 1) * pageSize
+				}
+			})
+			.exec((err, category) => {
+				if (err) {
+					return res.render('common/500', {error: err});
+				}
+				// 总页数
+				var totalPage = Math.ceil(category.__v / pageSize);
+				res.render('result', {
+					title: '电影结果页',
+					key: category.name,
+					movies: category.movies,
+					currentPage: page,
+					totalPage: totalPage,
+					query: 'cid=' + categoryId
+				});
+			});
+	} else {
+		// 查询电影
+		var key = req.query.q;
+		Movie
+			.find({title: new RegExp(req.query.q)})
+			.exec((error, movies) => {
+				if (error) {
+					return res.render('common/500', {error: error});
+				}
+				var totalPage = Math.ceil(movies.length / pageSize);
+				res.render('result', {
+					title: '查询结果页',
+					key: `查找到关于 '${key}' 的结果`,
+					movies: movies,
+					currentPage: page,
+					totalPage: totalPage,
+					query: 'q=' + key,
+					q: key
+				});
+			});
+	}
 }

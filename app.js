@@ -5,8 +5,35 @@ const cookieSession = require('cookie-session');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const morgan = require('morgan');
+const fs = require('fs');
 // 利用mongoDB作会话持久化
 const MongoStore = require('connect-mongo')(session);
+const multiparty = require('connect-multiparty');
+
+
+
+// models loading
+var models_path = __dirname + '/app/model';
+
+var walk = function(path) {
+	var dir = fs.readdirSync(path);
+	dir.forEach(file => {
+		var newPath = path + '/' + file;
+		var stat = fs.statSync(newPath);
+
+		if (stat.isFile()) {
+			if (/(.*)\.(js|coffee)/.test(file)) {
+				require(newPath);
+			}
+		} else if (stat.isDirectionary()) {
+			walk(newPath);
+		}
+	});
+}
+
+walk(models_path);
+
+
 
 
 // 默认端口是3000，也可以使用 PORT=5555 node app.js 指定端口号启动
@@ -23,6 +50,7 @@ app.set('views', './app/views/pages');
 app.set('view engine', 'jade');
 // 将表单的数据json格式化功能
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(multiparty());
 app.use(cookieSession({
 	name: 'imooc',
 	keys: ['imoocKey']

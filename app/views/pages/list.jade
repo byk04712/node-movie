@@ -12,6 +12,7 @@ block content
 						th 类型
 						th 上映年份
 						th 录入时间
+						th 访问量
 						th 查看
 						th 更新
 						th 删除
@@ -24,6 +25,7 @@ block content
 							td #{item.category.name}
 							td #{item.year}
 							td #{moment(item.meta.createAt).format('YYYY-MM-DD')}
+							td #{item.pv}
 							td: a(target="_blank", href="/movie/detail/#{item._id}") 查看
 							td: a(target="_blank", href="/admin/movie/update/#{item._id}") 修改
 							td

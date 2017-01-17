@@ -1,5 +1,9 @@
 # 项目目录结构说明
 
+public 存放js，css，上传文件目录等
+app,config 存放业务代码和项目配置
+test 存放测试代码 运行 `grunt test` 进行代码测试
+
 
 `npm install`
 
@@ -9,12 +13,6 @@
 
 view 模版使用 jade
 
-
-Schema      模式定义
-Model       编译模型
-Documents   文档实例化
-
-
 .bowerrc 文件说明
 `
 {
@@ -22,4 +20,33 @@ Documents   文档实例化
 }
 `
 
-持续更新中 2016-12-22
+项目依赖包
+`
+  "dependencies": {
+    "bcrypt",
+    "body-parser",
+    "bower",
+    "connect-mongo",
+    "connect-multiparty",
+    "cookie-session",
+    "express",
+    "express-session",
+    "jade",
+    "moment",
+    "mongoose",
+    "morgan",
+    "underscore"
+  }
+`
+
+
+// 开发环境依赖包
+`
+  "devDependencies": {
+    "grunt",
+    "grunt-concurrent",
+    "grunt-contrib-nodemon",
+    "grunt-contrib-watch",
+    "grunt-mocha-test"
+  }
+`

@@ -30,7 +30,7 @@ module.exports = function(app) {
 	app.delete('/admin/movie/list', User.adminRequired, Movie.del);
 	app.get('/admin/movie/list', User.adminRequired, Movie.list);
 	app.get('/admin/movie/update/:id', User.adminRequired, Movie.update);
-	app.post('/admin/movie/save', User.adminRequired, Movie.save);
+	app.post('/admin/movie/save', User.adminRequired, Movie.savePoster, Movie.save);
 	app.get('/movie/detail/:id', Movie.detail);
 
 
@@ -41,4 +41,7 @@ module.exports = function(app) {
 	app.get('/admin/category/new', User.adminRequired, Category.new);
 	app.post('/admin/category/save', User.adminRequired, Category.save);
 	app.get('/admin/category/list', Category.list);
+
+	// Search result
+	app.get('/search', Index.search);
 }

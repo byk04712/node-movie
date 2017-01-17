@@ -4,16 +4,21 @@ block content
 	.container
 		.row
 			each cat in categories
-				.panel.panel-primary
+				.panel.panel-default
 					.panel-heading
-						h4 #{cat.name}
+						h4
+							a(href="/search?cid=#{cat.id}&p=1") #{cat.name}
 					.panel-body
 						if cat.movies && cat.movies.length > 0
 							each item in cat.movies
 								.col-md-3
 									.thumbnail
 										a(href="/movie/detail/#{item._id}")
-											img(src="#{item.poster}", alt="#{item.title}" style="width:180px;height:236px;")
+											if (item.poster.startsWith('http'))
+												img(src="#{item.poster}", alt="#{item.title}" style="width:180px;height:236px;")
+											else
+												img(src="upload/#{item.poster}", alt="#{item.title}" style="width:180px;height:236px;")
 										.caption.text-center
 											h3 #{item.title}
 											p: a.btn.btn-success(href="/movie/detail/#{item._id}", role="button") 立即播放
+	script(type="text/javascript", src="/js/index.js")

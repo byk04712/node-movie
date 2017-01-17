@@ -35,6 +35,11 @@ nav.navbar.navbar-default(role="navigation")
 						a |
 					li
 						a(href="#", data-toggle="modal", data-target="#signinModal") 注册
+			form.navbar-form.navbar-right(method="GET", action="/search", role="search")
+				.input-group
+					input.form-control(type="search", placeholder="输入要查找的电影", name="q", value=q)
+					.input-group-btn
+						button.btn.btn-default(type="submit") 查询
 
 
 //- 登录框

@@ -2,6 +2,8 @@ const Movie = require('../model/movie');
 const Comment = require('../model/comment');
 const Category = require('../model/category');
 const _ = require('underscore');
+const fs = require('fs');
+const path = require('path');
 
 
 exports.admin = (req, res) => {
@@ -80,11 +82,53 @@ exports.update = (req, res) => {
 }
 
 
+/**
+ * 保存海报
+ */
+exports.savePoster = (req, res, next) => {
+	var posterData = req.files.uploadPoster;
+	var filePath = posterData.path;
+	var originalFilename = posterData.originalFilename;
+	if (originalFilename) {
+		fs.readFile(filePath, (err, data) => {
+			// 生成文件名
+			var timestamp = Date.now();
+			// 获取文件名后缀
+			var lastIdx = posterData.name.lastIndexOf('.');
+			var fileSuffix = posterData.name.substring(lastIdx);
+			var fileName = timestamp + fileSuffix;
+			// 保存的文件
+			var newDir = path.join(__dirname, '../../', "public/upload/");
+			var newFile = newDir + fileName;
+
+			// 如果文件夹不存在
+			if (!fs.existsSync(newDir)) {
+				fs.mkdirSync(newDir);
+			}
+			fs.writeFile(newFile, data, (error) => {
+				req.poster = fileName;
+				next();
+			});
+		});
+	} else {
+		next();
+	}
+}
+
+
+
+/**
+ * 保存/更新 电影
+ */
 exports.save = (req, res) => {
 	// 获取表单提交过来的ID
 	var movieObj = req.body.movie;
 	var id = movieObj.id;
 	var newObj;
+
+	if (req.poster) {
+		movieObj.poster = req.poster;
+	}
 
 	// 没有 ID 则是新增，否则是修改操作
 	if (id) {
@@ -121,7 +165,7 @@ exports.save = (req, res) => {
 							return res.render('common/500', {error: err});
 						}
 						// 保存电影分类信息
-						Category.findById(categoryId, (err, category) => {
+						Category.findById(data._id, (err, category) => {
 							if (err) {
 								return res.render('common/500', {error: err});
 							}
@@ -175,6 +219,10 @@ exports.save = (req, res) => {
 exports.detail = (req, res) => {
 	const id = req.params.id;
 	if (id) {
+		// 每次访问，访问量+1
+		Movie.update({_id: id}, {$inc:{pv:1}}, (err) => {
+			console.log('访问量+1');
+		});
 		Movie
 			.findOne({_id: id})
 			.populate('category', 'name')

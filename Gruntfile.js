@@ -38,12 +38,20 @@ module.exports = function(grunt) {
 			options: {
 				logConcurrentOutput: true
 			}
+		},
+		mochaTest: {
+			src: 'test/**/*.js',
+			options: {
+				reporter: 'spec'
+			}
 		}
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-nodemon');
 	grunt.loadNpmTasks('grunt-concurrent');
+	grunt.loadNpmTasks('grunt-mocha-test');
 
 	grunt.registerTask('default', ['concurrent']);
+	grunt.registerTask('test', ['mochaTest']);
 }

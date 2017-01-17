@@ -1,0 +1,46 @@
+extends ../layout
+block content
+	.container
+		.row
+			.panel.panel-default
+				.panel-heading
+					h3 #{key}
+				.panel-body
+					each movie in movies
+						.col-md-3
+							.thumbnail
+								a(href="/movie/detail/#{movie._id}")
+									img(src="#{movie.poster}", style="width:180px;height:236px;")
+								.caption.text-center
+									h3 #{movie.title}
+									p
+										a.btn.btn-success(href="/movie/detail/#{movie._id}", role="button") 立即播放
+				nav.text-center
+					ul.pagination.pagination-lg
+						- for(var i = 1; i <= totalPage; i++) {
+							- if (i == 1) {
+								- if (currentPage == 1) {
+									li.disabled
+										span &laquo;
+								- } else {
+									li
+										a(href="/search?#{query}&p=#{currentPage - 1}") &laquo;
+								- }
+							- }
+							- if (currentPage == i) {
+								li.active
+									span #{i}
+							- } else {
+								li
+									a(href="/search?#{query}&p=#{i}") #{i}
+							- }
+							- if (i == totalPage) {
+								- if (currentPage == totalPage) {
+									li.disabled
+										span &raquo;
+								- } else {
+									li
+										a(href="/search?#{query}&p=#{currentPage + 1}") &raquo;
+								- }
+							- }
+						- }
