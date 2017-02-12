@@ -1,8 +1,12 @@
+const multipart = require('connect-multiparty');
 const Index = require('../app/controller/index');
 const User = require('../app/controller/user');
 const Movie = require('../app/controller/movie');
 const Comment = require('../app/controller/comment');
 const Category = require('../app/controller/category');
+
+const multipartMiddleware = multipart();
+
 
 
 module.exports = function(app) {
@@ -30,7 +34,7 @@ module.exports = function(app) {
 	app.delete('/admin/movie/list', User.adminRequired, Movie.del);
 	app.get('/admin/movie/list', User.adminRequired, Movie.list);
 	app.get('/admin/movie/update/:id', User.adminRequired, Movie.update);
-	app.post('/admin/movie/save', User.adminRequired, Movie.savePoster, Movie.save);
+	app.post('/admin/movie/save', multipartMiddleware, User.adminRequired, Movie.savePoster, Movie.save);
 	app.get('/movie/detail/:id', Movie.detail);
 
 

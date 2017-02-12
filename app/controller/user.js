@@ -27,8 +27,10 @@ exports.signin = (req, res) => {
 	const _user = req.body.user;
 	// const _user = req.params('user');
 	
+	console.log('body = ', req.body);
 	if (_user) {
 		User.findOne({username: _user.username}, (err, user) => {
+			console.log('findOne ',user);
 			if (err) {
 				return res.render('common/500', {error: err})
 			}

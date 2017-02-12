@@ -1,14 +1,16 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const morgan = require('morgan');
 const fs = require('fs');
+
 // 利用mongoDB作会话持久化
 const MongoStore = require('connect-mongo')(session);
-const multiparty = require('connect-multiparty');
+const env = process.env.NODE_ENV || 'development';
 
 
 
@@ -49,8 +51,9 @@ app.set('views', './app/views/pages');
 // 设置默认的模版引擎
 app.set('view engine', 'jade');
 // 将表单的数据json格式化功能
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(multiparty());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(cookieParser());
 app.use(cookieSession({
 	name: 'imooc',
 	keys: ['imoocKey']
@@ -72,7 +75,7 @@ require('./config/routes')(app);
 
 
 // 开发环境配置
-if ('development' === app.get('env')) {
+if ('development' === env) {
 	// 显示错误信息
 	app.set('showStackError', true);
 	// 打印日志
