@@ -10,7 +10,9 @@ exports.admin = (req, res) => {
 	// 配置返回的页面 views/admin.jade
 	Category.find({}, (error, categories) => {
 		if (error) {
-			return res.render('common/500', {error: error});
+			return res.render('common/500', {
+				error: error
+			});
 		}
 		res.render('admin', {
 			title: '电影录入页',
@@ -25,11 +27,17 @@ exports.del = (req, res) => {
 	var id = req.query.id;
 
 	if (id) {
-		Movie.remove({_id: id}, (err, movie) => {
+		Movie.remove({
+			_id: id
+		}, (err, movie) => {
 			if (err) {
-				res.render('common/500', {error: err});
+				res.render('common/500', {
+					error: err
+				});
 			} else {
-				res.json({success: 1});
+				res.json({
+					success: 1
+				});
 			}
 		});
 	}
@@ -45,7 +53,9 @@ exports.list = (req, res) => {
 		.populate('category', 'name')
 		.exec((err, movies) => {
 			if (err) {
-				res.render('common/500', {error: err});
+				res.render('common/500', {
+					error: err
+				});
 			} else {
 				res.render('list', {
 					title: '电影列表页',
@@ -66,7 +76,9 @@ exports.update = (req, res) => {
 		Category.find({}, (err, categories) => {
 			Movie.findById(id, (err, movie) => {
 				if (err) {
-					res.render('common/500', {error: err});
+					res.render('common/500', {
+						error: err
+					});
 				} else {
 					res.render('admin', {
 						title: '电影修改页',
@@ -77,7 +89,9 @@ exports.update = (req, res) => {
 			});
 		});
 	} else {
-		res.render('common/500', {error: new Error('请求的页面不存在！')})
+		res.render('common/500', {
+			error: new Error('请求的页面不存在！')
+		})
 	}
 }
 
@@ -134,14 +148,18 @@ exports.save = (req, res) => {
 	if (id) {
 		Movie.findById(id, (err, movie) => {
 			if (err) {
-				res.render('common/500', {error: err});
+				res.render('common/500', {
+					error: err
+				});
 			} else {
 				// 属性合并
 				newObj = _.extend(movie, movieObj);
 				// 保存并跳转到详情页
 				newObj.save((error, result) => {
 					if (error) {
-						res.render('common/500', {error: error});
+						res.render('common/500', {
+							error: error
+						});
 					} else {
 						res.redirect('/admin/movie/list');
 					}
@@ -162,19 +180,25 @@ exports.save = (req, res) => {
 
 					newObj.save((err, result) => {
 						if (err) {
-							return res.render('common/500', {error: err});
+							return res.render('common/500', {
+								error: err
+							});
 						}
 						// 保存电影分类信息
 						Category.findById(data._id, (err, category) => {
 							if (err) {
-								return res.render('common/500', {error: err});
+								return res.render('common/500', {
+									error: err
+								});
 							}
 							// 将电影添加到电影分类数组中
 							category.movies.push(result._id);
 
 							category.save((error, cate) => {
 								if (error) {
-									return res.render('common/500', {error: error});
+									return res.render('common/500', {
+										error: error
+									});
 								}
 								res.redirect('/movie/detail/' + result._id);
 							})
@@ -185,19 +209,25 @@ exports.save = (req, res) => {
 			if (category) {
 				newObj.save((err, result) => {
 					if (err) {
-						return res.render('common/500', {error: err});
+						return res.render('common/500', {
+							error: err
+						});
 					}
 					// 保存电影分类信息
 					Category.findById(result.category, (err, category) => {
 						if (err) {
-							return res.render('common/500', {error: err});
+							return res.render('common/500', {
+								error: err
+							});
 						}
 						// 将电影添加到电影分类数组中
 						category.movies.push(result._id);
 
 						category.save((error, cate) => {
 							if (error) {
-								return res.render('common/500', {error: error});
+								return res.render('common/500', {
+									error: error
+								});
 							}
 							res.redirect('/movie/detail/' + result._id);
 						})
@@ -220,24 +250,38 @@ exports.detail = (req, res) => {
 	const id = req.params.id;
 	if (id) {
 		// 每次访问，访问量+1
-		Movie.update({_id: id}, {$inc:{pv:1}}, (err) => {
+		Movie.update({
+			_id: id
+		}, {
+			$inc: {
+				pv: 1
+			}
+		}, (err) => {
 			window.console.log('访问量+1');
 		});
 		Movie
-			.findOne({_id: id})
+			.findOne({
+				_id: id
+			})
 			.populate('category', 'name')
 			.exec((err, movie) => {
 				if (err) {
-					return res.render('common/500', {error: new Error('没有找到对应的资源')});
+					return res.render('common/500', {
+						error: new Error('没有找到对应的资源')
+					});
 				}
 
 				Comment
-					.find({movie: movie})
-					.populate('from', 'username')	// populate 用来获取关联表中的字段，如果第二个参数不写 username,将返回 user表中所有字段
+					.find({
+						movie: movie
+					})
+					.populate('from', 'username') // populate 用来获取关联表中的字段，如果第二个参数不写 username,将返回 user表中所有字段
 					.populate('reply.from reply.to', 'username')
 					.exec((err, comments) => {
 						if (err) {
-							return res.render('common/500', {error: new Error('电影评论数据异常')});		
+							return res.render('common/500', {
+								error: new Error('电影评论数据异常')
+							});
 						}
 
 						// 配置返回的页面 views/detail

@@ -58,7 +58,7 @@ UserSchema.pre('save', function(next, path, val, typel) {
 // 定义对象方法
 UserSchema.methods = {
 	comparePassword: function(_password, cb) {
-		window.console.log('_password', _password + ' -- ' + this.password);
+		console.log('_password', _password + ' -- ' + this.password);
 		bcrypt.compare(_password, this.password, (err, res) => {
 			if (err) {
 				return cb(err);

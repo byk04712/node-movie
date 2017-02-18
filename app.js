@@ -37,7 +37,6 @@ walk(models_path);
 
 
 
-
 // 默认端口是3000，也可以使用 PORT=5555 node app.js 指定端口号启动
 const port = process.env.PORT || 3000;
 const app = express();
@@ -50,8 +49,11 @@ mongoose.connect(dbUrl);
 app.set('views', './app/views/pages');
 // 设置默认的模版引擎
 app.set('view engine', 'jade');
-// 将表单的数据json格式化功能
-app.use(bodyParser.urlencoded({ extended: false }));
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({
+	extended: true
+}));
+// parse application/json
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(cookieSession({
@@ -87,4 +89,3 @@ if ('development' === env) {
 }
 
 console.log(`Server started on port ${port}`);
-

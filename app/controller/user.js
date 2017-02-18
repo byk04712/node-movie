@@ -26,19 +26,23 @@ exports.showSignup = (req, res) => {
 exports.signin = (req, res) => {
 	const _user = req.body.user;
 	// const _user = req.params('user');
-	
+
 	console.log('body = ', req.body);
 	if (_user) {
-		User.findOne({username: _user.username}, (err, user) => {
-			console.log('findOne ',user);
+		User.findOne({
+			username: _user.username
+		}, (err, user) => {
+			console.log('findOne ', user);
 			if (err) {
-				return res.render('common/500', {error: err})
+				return res.render('common/500', {
+					error: err
+				})
 			}
 
 			if (!user) {
 				return res.render('signin', {
-						message: '用户名或密码错误！'
-					});
+					message: '用户名或密码错误！'
+				});
 			}
 			user.comparePassword(_user.password, (err, isMatch) => {
 				if (err) {
@@ -65,6 +69,12 @@ exports.signin = (req, res) => {
 				}
 			})
 		});
+	} else {
+		res.render('common/500', {
+			error: {
+				message: '登录异常'
+			}
+		});
 	}
 }
 
@@ -74,18 +84,26 @@ exports.signup = (req, res) => {
 
 	if (_user) {
 		// 检测用户是否存在
-		User.find({username: _user.username}, (err, users) => {
+		User.find({
+			username: _user.username
+		}, (err, users) => {
 			if (err) {
-				res.render('common/500', {error: err});
+				res.render('common/500', {
+					error: err
+				});
 			} else {
 				// 如果用户已存在
 				if (users && users.length > 0) {
-					return res.render('signup', {message: '账号已存在！'});
-				} else {		
-					const user = new User(_user);			
+					return res.render('signup', {
+						message: '账号已存在！'
+					});
+				} else {
+					const user = new User(_user);
 					user.save((err, result) => {
 						if (err) {
-							res.render('signup', {message: err.message});
+							res.render('signup', {
+								message: err.message
+							});
 						} else {
 							// 注册成功
 							res.redirect('/signin');
@@ -101,7 +119,9 @@ exports.signup = (req, res) => {
 exports.userlist = (req, res) => {
 	User.fetch((err, users) => {
 		if (err) {
-			res.render('common/500', {error: err});
+			res.render('common/500', {
+				error: err
+			});
 		} else {
 			res.render('userlist', {
 				title: '用户列表页',
@@ -120,7 +140,7 @@ exports.signinRequired = (req, res, next) => {
 	if (!user) {
 		return res.redirect('/signin');
 	}
-	next(); 
+	next();
 }
 
 
